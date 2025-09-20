@@ -116,3 +116,29 @@ document.addEventListener('DOMContentLoaded', function() {
     checkImageOrientation();
     window.addEventListener('load', checkImageOrientation);
 });
+
+// Typewriter effect
+function initTypewriter() {
+    const titleElement = document.querySelector('.hero h1');
+    const originalText = titleElement.innerHTML;
+    const text = "Hey, I'm Radha Mohan";
+    
+    titleElement.innerHTML = '';
+    let i = 0;
+    
+    function typeWriter() {
+        if (i < text.length) {
+            titleElement.innerHTML += text.charAt(i);
+            i++;
+            setTimeout(typeWriter, 100);
+        } else {
+            // Add the span with different color after typing
+            titleElement.innerHTML += ' <span style="color: var(--primary)">Software Developer</span>';
+        }
+    }
+    
+    typeWriter();
+}
+
+// Call this when DOM is loaded
+document.addEventListener('DOMContentLoaded', initTypewriter);
