@@ -133,7 +133,7 @@ function initTypewriter() {
             setTimeout(typeWriter, 100);
         } else {
             // Add the span with different color after typing
-            titleElement.innerHTML += ' <span style="color: var(--primary)">Software Developer</span>';
+            titleElement.innerHTML += ' <span style="color: var(--primary)"></span>';
         }
     }
     
