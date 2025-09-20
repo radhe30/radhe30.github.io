@@ -109,29 +109,32 @@ document.addEventListener('DOMContentLoaded', function() {
   }, { passive: false });
 });
 // Sticky header behavior - hides on scroll down, shows on scroll up
+//let lastScrollTop = 0;
+//const header = document.querySelector('header');
+//const scrollThreshold = 100; // How much to scroll before hiding header
+//let isMobileMenuOpen = false;
+
+//if (header) {
+//    window.addEventListener('scroll', function() {
+//        let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+//        
+//        if (scrollTop > lastScrollTop && scrollTop > scrollThreshold) {
+//            // Scrolling down - hide header
+//            header.style.transform = 'translateY(-100%)';
+//        } else {
+//            // Scrolling up - show header
+//            header.style.transform = 'translateY(0)';
+//        }
+//        
+//        lastScrollTop = scrollTop;
+//    });
+//}
+
+
+// Sticky header behavior - hides on scroll down, shows on scroll up
 let lastScrollTop = 0;
 const header = document.querySelector('header');
 const scrollThreshold = 100; // How much to scroll before hiding header
-
-if (header) {
-    window.addEventListener('scroll', function() {
-        let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        
-        if (scrollTop > lastScrollTop && scrollTop > scrollThreshold) {
-            // Scrolling down - hide header
-            header.style.transform = 'translateY(-100%)';
-        } else {
-            // Scrolling up - show header
-            header.style.transform = 'translateY(0)';
-        }
-        
-        lastScrollTop = scrollTop;
-    });
-}
-// Enhanced sticky header with better mobile support
-let lastScrollTop = 0;
-const header = document.querySelector('header');
-const scrollThreshold = 50;
 let isMobileMenuOpen = false;
 
 // Function to handle header visibility
@@ -152,6 +155,83 @@ function handleHeaderScroll() {
 }
 
 // Initialize header behavior
+if (header) {
+    // Throttle scroll events for better performance
+    let ticking = false;
+    window.addEventListener('scroll', function() {
+        if (!ticking) {
+            window.requestAnimationFrame(function() {
+                handleHeaderScroll();
+                ticking = false;
+            });
+            ticking = true;
+        }
+    });
+    
+    // Track mobile menu state
+    const menuBtn = document.querySelector('.menu-btn');
+    const navLinks = document.querySelector('.nav-links');
+    
+    if (menuBtn && navLinks) {
+        menuBtn.addEventListener('click', function() {
+            isMobileMenuOpen = !navLinks.classList.contains('active');
+            if (isMobileMenuOpen) {
+                header.classList.remove('header-hidden');
+            }
+        });
+        
+        // Close menu when clicking on links
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', function() {
+                isMobileMenuOpen = false;
+                navLinks.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+        });
+        
+        // Close button functionality
+        const closeBtn = document.querySelector('.close-btn');
+        if (closeBtn) {
+            closeBtn.addEventListener('click', function() {
+                isMobileMenuOpen = false;
+                navLinks.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+        }
+    }
+}
+
+// Enhanced sticky header with better mobile support
+
+
+let lastScrollTop = 0;
+const header = document.querySelector('header');
+const scrollThreshold = 50;
+let isMobileMenuOpen = false;
+
+
+
+// Function to handle header visibility
+function handleHeaderScroll() {
+    if (isMobileMenuOpen) return; // Don't hide header if mobile menu is open
+    
+    let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    
+    if (scrollTop > lastScrollTop && scrollTop > scrollThreshold) {
+        // Scrolling down - hide header
+        header.classList.add('header-hidden');
+    } else {
+        // Scrolling up - show header
+        header.classList.remove('header-hidden');
+    }
+    
+    lastScrollTop = scrollTop;
+}
+
+
+
+// Initialize header behavior
+
 if (header) {
     // Throttle scroll events for better performance
     let ticking = false;
@@ -219,3 +299,64 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+
+
+
+// Debug version with console logging
+console.log("Scroll script loaded");
+
+let lastScrollTop = 0;
+const header = document.querySelector('header');
+const scrollThreshold = 100;
+let isMobileMenuOpen = false;
+
+console.log("Header element:", header);
+
+function handleHeaderScroll() {
+    if (isMobileMenuOpen) {
+        console.log("Mobile menu open, skipping scroll hide");
+        return;
+    }
+    
+    let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    console.log("Scroll position:", scrollTop, "Last scroll:", lastScrollTop);
+    
+    if (scrollTop > lastScrollTop && scrollTop > scrollThreshold) {
+        console.log("Hiding header");
+        header.classList.add('header-hidden');
+    } else {
+        console.log("Showing header");
+        header.classList.remove('header-hidden');
+    }
+    
+    lastScrollTop = scrollTop;
+}
+
+if (header) {
+    console.log("Header found, attaching scroll listener");
+    
+    let ticking = false;
+    window.addEventListener('scroll', function() {
+        if (!ticking) {
+            window.requestAnimationFrame(function() {
+                handleHeaderScroll();
+                ticking = false;
+            });
+            ticking = true;
+        }
+    });
+    
+    // Test if we can manually hide/show the header
+    console.log("Testing manual header control");
+    setTimeout(() => {
+        header.classList.add('header-hidden');
+        console.log("Header should be hidden now");
+    }, 2000);
+    
+    setTimeout(() => {
+        header.classList.remove('header-hidden');
+        console.log("Header should be visible now");
+    }, 4000);
+} else {
+    console.error("Header element not found!");
+}

@@ -679,3 +679,36 @@ nav {
         justify-content: center;
     }
 }
+
+/* Ensure header has proper positioning */
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    background-color: rgba(26, 26, 46, 0.95);
+    backdrop-filter: blur(10px);
+}
+
+/* Class to hide header when scrolling down */
+.header-hidden {
+    transform: translateY(-100%);
+}
+
+/* Add padding to body to prevent content from being hidden under fixed header */
+body {
+    padding-top: 80px;
+}
+
+/* Adjust for mobile */
+@media (max-width: 768px) {
+    body {
+        padding-top: 70px;
+    }
+    
+    header {
+        backdrop-filter: none;
+    }
+}
