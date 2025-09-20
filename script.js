@@ -185,3 +185,37 @@ if (header) {
         });
     }
 }
+// Mobile menu functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const menuBtn = document.querySelector('.menu-btn');
+    const closeBtn = document.querySelector('.close-btn');
+    const navLinks = document.querySelector('.nav-links');
+    let isMobileMenuOpen = false;
+    
+    // Open mobile menu
+    if (menuBtn) {
+        menuBtn.addEventListener('click', function() {
+            navLinks.classList.add('active');
+            isMobileMenuOpen = true;
+            document.body.style.overflow = 'hidden';
+        });
+    }
+    
+    // Close mobile menu
+    if (closeBtn) {
+        closeBtn.addEventListener('click', function() {
+            navLinks.classList.remove('active');
+            isMobileMenuOpen = false;
+            document.body.style.overflow = '';
+        });
+    }
+    
+    // Close menu when clicking on links
+    document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', function() {
+            navLinks.classList.remove('active');
+            isMobileMenuOpen = false;
+            document.body.style.overflow = '';
+        });
+    });
+});
