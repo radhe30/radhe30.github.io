@@ -511,3 +511,54 @@ html, body {
     justify-content: center;
   }
 }
+/* Add to your existing CSS */
+header {
+    transition: transform 0.3s ease-in-out;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+/* Ensure content doesn't jump when header hides */
+body {
+    padding-top: 70px; /* Adjust based on your header height */
+}
+
+@media (max-width: 768px) {
+    body {
+        padding-top: 60px; /* Smaller padding for mobile */
+    }
+}
+/* Add these styles to your CSS */
+.header-hidden {
+    transform: translateY(-100%) !important;
+}
+
+/* Smooth transitions for header */
+header {
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    background-color: rgba(26, 26, 46, 0.95) !important;
+    backdrop-filter: blur(10px);
+}
+
+/* Adjust body padding to account for fixed header */
+body {
+    padding-top: 80px;
+}
+
+@media (max-width: 768px) {
+    body {
+        padding-top: 70px;
+    }
+    
+    header {
+        backdrop-filter: none;
+    }
+}
+
+/* Add shadow when header is visible */
+header:not(.header-hidden) {
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+}

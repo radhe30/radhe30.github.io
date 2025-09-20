@@ -108,3 +108,80 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }, { passive: false });
 });
+// Sticky header behavior - hides on scroll down, shows on scroll up
+let lastScrollTop = 0;
+const header = document.querySelector('header');
+const scrollThreshold = 100; // How much to scroll before hiding header
+
+if (header) {
+    window.addEventListener('scroll', function() {
+        let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        
+        if (scrollTop > lastScrollTop && scrollTop > scrollThreshold) {
+            // Scrolling down - hide header
+            header.style.transform = 'translateY(-100%)';
+        } else {
+            // Scrolling up - show header
+            header.style.transform = 'translateY(0)';
+        }
+        
+        lastScrollTop = scrollTop;
+    });
+}
+// Enhanced sticky header with better mobile support
+let lastScrollTop = 0;
+const header = document.querySelector('header');
+const scrollThreshold = 50;
+let isMobileMenuOpen = false;
+
+// Function to handle header visibility
+function handleHeaderScroll() {
+    if (isMobileMenuOpen) return; // Don't hide header if mobile menu is open
+    
+    let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    
+    if (scrollTop > lastScrollTop && scrollTop > scrollThreshold) {
+        // Scrolling down - hide header
+        header.classList.add('header-hidden');
+    } else {
+        // Scrolling up - show header
+        header.classList.remove('header-hidden');
+    }
+    
+    lastScrollTop = scrollTop;
+}
+
+// Initialize header behavior
+if (header) {
+    // Throttle scroll events for better performance
+    let ticking = false;
+    window.addEventListener('scroll', function() {
+        if (!ticking) {
+            window.requestAnimationFrame(function() {
+                handleHeaderScroll();
+                ticking = false;
+            });
+            ticking = true;
+        }
+    });
+    
+    // Track mobile menu state
+    const menuBtn = document.querySelector('.menu-btn');
+    const navLinks = document.querySelector('.nav-links');
+    
+    if (menuBtn && navLinks) {
+        menuBtn.addEventListener('click', function() {
+            isMobileMenuOpen = !isMobileMenuOpen;
+            if (isMobileMenuOpen) {
+                header.classList.remove('header-hidden');
+            }
+        });
+        
+        // Close menu when clicking on links
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', function() {
+                isMobileMenuOpen = false;
+            });
+        });
+    }
+}
