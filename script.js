@@ -360,3 +360,84 @@ if (header) {
 } else {
     console.error("Header element not found!");
 }
+// Simple form validation
+document.getElementById('contactForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const message = document.getElementById('message').value;
+    
+    if (name && email && message) {
+        alert('Thank you for your message! I will get back to you soon.');
+        this.reset();
+    }
+});
+
+// Mobile menu functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const menuBtn = document.querySelector('.menu-btn');
+    const closeBtn = document.querySelector('.close-btn');
+    const navLinks = document.querySelector('.nav-links');
+    let isMobileMenuOpen = false;
+    
+    // Open mobile menu
+    if (menuBtn) {
+        menuBtn.addEventListener('click', function() {
+            navLinks.classList.add('active');
+            isMobileMenuOpen = true;
+            document.body.style.overflow = 'hidden';
+        });
+    }
+    
+    // Close mobile menu
+    if (closeBtn) {
+        closeBtn.addEventListener('click', function() {
+            navLinks.classList.remove('active');
+            isMobileMenuOpen = false;
+            document.body.style.overflow = '';
+        });
+    }
+    
+    // Close menu when clicking on links
+    document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', function() {
+            navLinks.classList.remove('active');
+            isMobileMenuOpen = false;
+            document.body.style.overflow = '';
+        });
+    });
+    
+    // Sticky header behavior
+    let lastScrollTop = 0;
+    const header = document.querySelector('header');
+    const scrollThreshold = 50;
+    
+    function handleHeaderScroll() {
+        if (isMobileMenuOpen) return;
+        
+        let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        
+        if (scrollTop > lastScrollTop && scrollTop > scrollThreshold) {
+            header.classList.add('header-hidden');
+        } else {
+            header.classList.remove('header-hidden');
+        }
+        
+        lastScrollTop = scrollTop;
+    }
+    
+    // Initialize header behavior
+    if (header) {
+        let ticking = false;
+        window.addEventListener('scroll', function() {
+            if (!ticking) {
+                window.requestAnimationFrame(function() {
+                    handleHeaderScroll();
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        });
+    }
+});
