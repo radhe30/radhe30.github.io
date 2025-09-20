@@ -150,7 +150,7 @@ nav {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-size: 300% 300%;
-    animation: gradientShift 3s ease infinite;
+    /*animation: gradientShift 3s ease infinite;*/
 }
 
 .hero h3 {
