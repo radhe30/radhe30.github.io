@@ -43,3 +43,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Also run when window is fully loaded
 window.addEventListener('load', checkImageOrientation);
+// Mobile menu toggle
+const menuBtn = document.querySelector('.menu-btn');
+const navLinks = document.querySelector('.nav-links');
+
+if (menuBtn && navLinks) {
+    menuBtn.addEventListener('click', () => {
+        navLinks.classList.toggle('active');
+    });
+    
+    // Close menu when clicking on links
+    document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', () => {
+            navLinks.classList.remove('active');
+        });
+    });
+}
